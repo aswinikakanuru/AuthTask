@@ -10,7 +10,7 @@ from sqlmodel import select
 
 from database import User, SessionDep
 
-# Load JWT settings strictly from .env
+
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 if not SECRET_KEY:
@@ -23,7 +23,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
-# 1. Password Hashing Utilities
+
 def hash_password(password: str) -> str:
     """Hash plain password using bcrypt."""
     return pwd_context.hash(password)
@@ -51,7 +51,6 @@ def verify_token(token: str):
         return None
 
 
-# 3. Protected Route Dependency: Extract logged-in user from Token
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], session: SessionDep) -> User:
     """Extract and verify user from Bearer JWT token."""
     payload = verify_token(token)

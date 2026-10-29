@@ -9,7 +9,6 @@ from routers.auth import router as auth_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Creates the 'users' table directly in PostgreSQL on application startup
     SQLModel.metadata.create_all(engine)
     yield
 
