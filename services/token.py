@@ -30,13 +30,13 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    """Verify plain password against hashed password in PostgreSQL."""
+    #Verify plain password against hashed password in PostgreSQL.
     return pwd_context.verify(plain, hashed)
 
 
 # 2. JWT Token Generation & Verification
 def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
-    """Create signed JWT access token."""
+    #Create signed JWT access token.
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
@@ -44,7 +44,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
 
 
 def verify_token(token: str):
-    """Decode and verify JWT token."""
+    #Decode and verify JWT token.
     try:
         return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except JWTError:
@@ -52,7 +52,7 @@ def verify_token(token: str):
 
 
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], session: SessionDep) -> User:
-    """Extract and verify user from Bearer JWT token."""
+    #Extract and verify user from Bearer JWT token.
     payload = verify_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid Token")
